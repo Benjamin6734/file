@@ -1,4 +1,4 @@
-{
+
   "name": "Mfumo wa Malipo Shule ya Msingi Mabatini",
   "short_name": "Malipo Mabatini",
   "description": "Mfumo rahisi wa kudhibiti malipo ya wanafunzi shule ya msingi Mabatini",
@@ -6,4 +6,3 @@
   "display": "standalone",
   "background_color": "#ffffff",
   "theme_color": "#0066ff"
-}
