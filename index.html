@@ -1,0 +1,1544 @@
+<!DOCTYPE html>
+<html lang="sw">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
+<title>Mfumo wa Malipo - Shule ya Msingi Mabatini</title>
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#0066ff" />
+
+<style>
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  body {
+    font-family: "Segoe UI", -apple-system, BlinkMacSystemFont, sans-serif;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    min-height: 100vh;
+    color: #333;
+    line-height: 1.6;
+    padding: 0;
+    overflow-x: hidden;
+  }
+
+  /* Header ya kupendeza */
+  header {
+    background: linear-gradient(135deg, #ff6b6b, #4ecdc4, #45b7d1);
+    color: white;
+    text-align: center;
+    padding: 25px 15px;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+    position: relative;
+    overflow: hidden;
+  }
+
+  header::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+    animation: shimmer 3s ease-in-out infinite;
+  }
+
+  @keyframes shimmer {
+    0%, 100% { transform: translateX(-100%); }
+    50% { transform: translateX(100%); }
+  }
+
+  header h1 {
+    font-size: 18px;
+    margin: 3px 0;
+    font-weight: 700;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+    position: relative;
+    z-index: 1;
+  }
+
+  header h2, header h3, header h4 {
+    font-size: 16px;
+    margin: 3px 0;
+    font-weight: 600;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* Container mzuri */
+  .container {
+    max-width: 480px;
+    margin: 0 auto;
+    padding: 20px 15px;
+    background: rgba(255,255,255,0.95);
+    backdrop-filter: blur(10px);
+    border-radius: 20px 20px 0 0;
+    box-shadow: 0 -10px 40px rgba(0,0,0,0.2);
+    min-height: calc(100vh - 200px);
+  }
+
+  /* Input fields za kupendeza */
+  input[type="text"], input[type="number"], input[type="file"] {
+    width: 100%;
+    padding: 15px 20px;
+    border: 2px solid #e1e8ed;
+    border-radius: 25px;
+    font-size: 16px;
+    margin: 10px 0;
+    background: white;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    transition: all 0.3s ease;
+    outline: none;
+  }
+
+  input[type="file"] {
+    padding: 10px 20px; /* Adjust padding for file input */
+  }
+
+  input[type="text"]:focus, input[type="number"]:focus, input[type="file"]:focus {
+    border-color: #667eea;
+    box-shadow: 0 6px 20px rgba(102,126,234,0.3);
+    transform: translateY(-2px);
+  }
+
+  /* Buttons za kupendeza */
+  button {
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    color: white;
+    border: none;
+    padding: 15px 25px;
+    border-radius: 25px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: 600;
+    width: 100%;
+    margin: 10px 0;
+    box-shadow: 0 6px 20px rgba(102,126,234,0.4);
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+  }
+
+  button::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+    transition: left 0.5s;
+  }
+
+  button:hover::before {
+    left: 100%;
+  }
+
+  button:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 30px rgba(102,126,234,0.5);
+  }
+
+  button:active {
+    transform: translateY(0);
+  }
+
+  /* Special buttons */
+  .add-btn {
+    background: linear-gradient(135deg, #11998e, #38ef7d);
+    box-shadow: 0 6px 20px rgba(17,153,142,0.4);
+  }
+
+  .report-btn {
+    background: linear-gradient(135deg, #ff6b6b, #feca57);
+    box-shadow: 0 6px 20px rgba(255,107,107,0.4);
+  }
+
+  .reset-btn {
+    background: linear-gradient(135deg, #ff9a9e, #fad0c4);
+    color: #333;
+    box-shadow: 0 6px 20px rgba(255,154,158,0.4);
+  }
+
+  .data-action-btn {
+    background: linear-gradient(135deg, #4ecdc4, #5c67f2);
+    box-shadow: 0 6px 20px rgba(78,205,196,0.4);
+  }
+
+  /* Filter buttons container */
+  .filter-buttons {
+    display: flex;
+    justify-content: space-around;
+    gap: 10px;
+    margin: 10px 0 20px;
+    flex-wrap: wrap; /* Allow wrapping on small screens */
+  }
+
+  .filter-buttons button {
+    flex: 1;
+    min-width: 100px;
+    padding: 10px 15px;
+    font-size: 14px;
+    border-radius: 20px;
+    background: #e1e8ed; /* Default inactive */
+    color: #333;
+    box-shadow: none;
+    transition: all 0.2s ease;
+  }
+
+  .filter-buttons button.active {
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    color: white;
+    box-shadow: 0 4px 10px rgba(102,126,234,0.3);
+    transform: translateY(-2px);
+  }
+
+  /* Table ya kupendeza */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+    background: white;
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 8px 30px rgba(0,0,0,0.1);
+    font-size: 14px;
+  }
+
+  th {
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    color: white;
+    padding: 15px 10px;
+    font-weight: 600;
+    text-align: center;
+    font-size: 13px;
+    cursor: pointer; /* Indicate sortable */
+  }
+
+  th:hover {
+    background: linear-gradient(135deg, #5c67f2, #6a429a); /* Slightly darker on hover */
+  }
+
+  td {
+    padding: 12px 8px;
+    border-bottom: 1px solid #f0f0f0;
+    text-align: center;
+    font-size: 12px;
+  }
+
+  tr:nth-child(even) {
+    background: linear-gradient(135deg, #f8f9ff, #ffffff);
+  }
+
+  tr:hover {
+    background: linear-gradient(135deg, #e8f2ff, #f0f8ff);
+    transform: scale(1.01);
+    transition: all 0.3s ease;
+  }
+
+  /* Student Image Styles */
+  .student-image-cell {
+    width: 50px; /* Fixed width for the image column */
+    height: 50px; /* Fixed height for the image column */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    border-radius: 50%; /* Make it circular */
+    background-color: #f0f0f0; /* Placeholder background */
+    margin: 0 auto; /* Center the image in the cell */
+  }
+
+  .student-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Crop image to fit */
+    border-radius: 50%;
+  }
+
+  .student-image-placeholder {
+    font-size: 24px;
+    color: #ccc;
+    line-height: 1;
+  }
+
+
+  /* Action buttons ndogo */
+  td button {
+    margin: 2px;
+    padding: 8px 12px;
+    font-size: 11px;
+    border-radius: 20px;
+    width: auto;
+    min-width: 60px;
+  }
+
+  .paidBtn {
+    background: linear-gradient(135deg, #11998e, #38ef7d);
+    box-shadow: 0 4px 15px rgba(17,153,142,0.3);
+  }
+
+  .markPaidBtn {
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    box-shadow: 0 4px 15px rgba(102,126,234,0.3);
+  }
+
+  .editBtn {
+    background: linear-gradient(135deg, #feca57, #ff9ff3);
+    color: #333;
+    box-shadow: 0 4px 15px rgba(254,202,87,0.3);
+  }
+
+  .deleteBtn {
+    background: linear-gradient(135deg, #ff6b6b, #ee5a52);
+    box-shadow: 0 4px 15px rgba(255,107,107,0.3);
+  }
+
+  /* Modal za kupendeza */
+  #addFormOverlay, #importModalOverlay, #previewModal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0,0,0,0.6);
+    backdrop-filter: blur(5px);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+    animation: fadeIn 0.3s ease;
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+
+  #addForm, #importModal, #previewModal > div {
+    background: white;
+    padding: 30px 25px;
+    border-radius: 20px;
+    width: 90%;
+    max-width: 400px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+    text-align: left;
+    animation: slideUp 0.3s ease;
+  }
+
+  @keyframes slideUp {
+    from { transform: translateY(50px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+  }
+
+  #addForm h3, #importModal h3, #previewModal h1, #previewModal h2, #previewModal h3, #previewModal h4 {
+    color: #667eea;
+    margin-bottom: 20px;
+    text-align: center;
+    font-size: 18px;
+  }
+
+  #addForm label {
+    display: block;
+    margin-top: 15px;
+    font-weight: 600;
+    color: #333;
+  }
+
+  #addForm input, #addForm select {
+    width: 100%;
+    padding: 12px 15px;
+    margin-top: 8px;
+    border: 2px solid #e1e8ed;
+    border-radius: 15px;
+    font-size: 14px;
+    outline: none;
+    transition: all 0.3s ease;
+  }
+
+  #addForm input:focus, #addForm select:focus {
+    border-color: #667eea;
+    box-shadow: 0 4px 15px rgba(102,126,234,0.2);
+  }
+
+  #addFormButtons {
+    margin-top: 25px;
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap; /* Allow wrapping for buttons */
+  }
+
+  #addFormButtons button {
+    flex: 1;
+    margin: 0;
+    min-width: 120px; /* Ensure buttons have minimum width */
+  }
+
+  /* Report Modal Specific Styles */
+  #previewModal > div {
+    max-width: 500px;
+    max-height: 80vh;
+    overflow-y: auto;
+    padding: 25px;
+  }
+
+  #reportTableContainer {
+    max-height: 400px;
+    overflow-y: auto;
+    margin: 20px 0;
+  }
+
+  #reportTableContainer h4 {
+    color: #667eea;
+    margin: 20px 0 10px 0;
+    padding: 10px;
+    background: linear-gradient(135deg, #f8f9ff, #ffffff);
+    border-radius: 10px;
+    border-left: 4px solid #667eea;
+  }
+
+  #reportTableContainer h5 {
+    color: #333;
+    font-weight: 700;
+    margin: 10px 0;
+    padding: 8px;
+    background: linear-gradient(135deg, #e8f2ff, #f0f8ff);
+    border-radius: 8px;
+    text-align: center;
+  }
+
+  /* Footer za kupendeza */
+  footer {
+    background: linear-gradient(135deg, #2c3e50, #3498db);
+    color: white;
+    text-align: center;
+    padding: 20px;
+    margin-top: 30px;
+    box-shadow: 0 -5px 20px rgba(0,0,0,0.2);
+  }
+
+  footer p {
+    margin: 0;
+    font-size: 14px;
+    opacity: 0.9;
+  }
+
+  /* Responsive design */
+  @media (max-width: 480px) {
+    .container {
+      padding: 15px 10px;
+      border-radius: 15px 15px 0 0;
+    }
+
+    header {
+      padding: 20px 10px;
+    }
+
+    header h1 {
+      font-size: 16px;
+    }
+
+    header h2, header h3, header h4 {
+      font-size: 14px;
+    }
+
+    button {
+      padding: 12px 20px;
+      font-size: 15px;
+    }
+
+    th {
+      padding: 10px 5px;
+      font-size: 12px;
+    }
+
+    td {
+      padding: 8px 4px;
+      font-size: 11px;
+    }
+
+    td button {
+      padding: 6px 8px;
+      font-size: 10px;
+      min-width: 50px;
+    }
+
+    #addForm, #importModal {
+      padding: 20px 15px;
+      margin: 10px;
+    }
+
+    .filter-buttons button {
+      flex-basis: 48%; /* Two columns on small screens */
+    }
+  }
+
+  /* Loading animation */
+  .loading {
+    opacity: 0.7;
+    pointer-events: none;
+  }
+
+  .loading::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 20px;
+    height: 20px;
+    border: 2px solid #667eea;
+    border-top: 2px solid transparent;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+  }
+
+  @keyframes spin {
+    0% { transform: translate(-50%, -50%) rotate(0deg); }
+    100% { transform: translate(-50%, -50%) rotate(360deg); }
+  }
+
+  /* Status indicators */
+  .status-paid {
+    color: #11998e;
+    font-weight: 600;
+  }
+
+  .status-pending {
+    color: #ff6b6b;
+    font-weight: 600;
+  }
+
+  /* No results message */
+  #noResultsMessage {
+    text-align: center;
+    color: #555;
+    margin-top: 20px;
+    font-size: 16px;
+    padding: 15px;
+    background: #f0f0f0;
+    border-radius: 10px;
+    /* Changed default display to block for initial state */
+    display: block;
+  }
+
+  /* Toast notification */
+  .toast {
+    visibility: hidden;
+    min-width: 250px;
+    background-color: #333;
+    color: #fff;
+    text-align: center;
+    border-radius: 8px;
+    padding: 16px;
+    position: fixed;
+    z-index: 10000;
+    left: 50%;
+    bottom: 30px;
+    transform: translateX(-50%);
+    font-size: 17px;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+    opacity: 0;
+    transition: visibility 0s, opacity 0.5s linear;
+  }
+
+  .toast.show {
+    visibility: visible;
+    animation: fadein 0.5s, fadeout 0.5s 2.5s;
+    opacity: 1;
+  }
+
+  @keyframes fadein {
+    from {bottom: 0; opacity: 0;}
+    to {bottom: 30px; opacity: 1;}
+  }
+
+  @keyframes fadeout {
+    from {bottom: 30px; opacity: 1;}
+    to {bottom: 0; opacity: 0;}
+  }
+
+  .toast.success { background-color: #11998e; }
+  .toast.error { background-color: #ff6b6b; }
+</style>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.25/jspdf.plugin.autotable.min.js"></script>
+
+</head>
+<body>
+
+<header>
+  <h1>🏫 HALMASHAURI YA MANISPAA YA TEMEKE</h1>
+  <h2>📚 SHULE YA MSINGI MABATINI</h2>
+  <h3>💰 MAKUSANYO YA MICHANGO YA USAFI</h3>
+  <h4>🎓 DARASA LA TANO 2025</h4>
+</header>
+
+<div class="container">
+  <input type="text" id="search" placeholder="🔍 Tafuta kwa jina au namba...">
+
+  <div class="filter-buttons">
+    <button id="filterAll" class="active">Wote</button>
+    <button id="filterPaid">Waliolipa</button>
+    <button id="filterUnpaid">Wasiolipa</button>
+  </div>
+
+  <button id="addBtn" class="add-btn">➕ Ongeza Mwanafunzi</button>
+  <button id="printReport" class="report-btn">📊 Angalia Ripoti Kuu</button>
+  <button id="resetPaid" class="reset-btn">🔄 Weka Tuli Malipo Yote</button>
+
+  <div id="noResultsMessage">Tafadhali andika jina au namba kutafuta wanafunzi.</div>
+
+  <table id="studentTable" style="display:none;">
+    <thead>
+      <tr>
+        <th>Picha</th> <th data-sort="number">Namba ▼</th>
+        <th data-sort="name">Jina</th>
+        <th>Jinsia</th>
+        <th>Kiasi</th>
+        <th>Hali</th>
+        <th>Vitendo</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+</div>
+
+<div id="addFormOverlay">
+  <form id="addForm" autocomplete="off">
+    <h3>➕ Ongeza Mwanafunzi Mpya</h3>
+
+    <label for="numInput">📋 Namba</label>
+    <input type="number" id="numInput" required min="1" />
+
+    <label for="nameInput">👤 Jina</label>
+    <input type="text" id="nameInput" required />
+
+    <label for="genderInput">⚤ Jinsia</label>
+    <select id="genderInput" required>
+      <option value="">Chagua Jinsia</option>
+      <option value="Mwanaume">👦 Mwanaume</option>
+      <option value="Mwanamke">👧 Mwanamke</option>
+    </select>
+
+    <label for="amountInput">💵 Kiasi Kinachotakiwa Kulipwa (Tsh)</label>
+    <input type="number" id="amountInput" value="200" required min="0" />
+
+    <label for="imageInput">📸 Picha ya Mwanafunzi (Optional)</label>
+    <input type="file" id="imageInput" accept="image/*" />
+    <div id="imagePreview" style="width: 100px; height: 100px; border-radius: 50%; overflow: hidden; margin: 10px auto; background-color: #f0f0f0; display: flex; justify-content: center; align-items: center;">
+        <img id="currentImage" src="" alt="Picha ya sasa" style="width: 100%; height: 100%; object-fit: cover; display: none;">
+        <span id="imagePlaceholder" style="font-size: 40px; color: #ccc; display: block;">👤</span>
+    </div>
+    <button type="button" id="clearImageBtn" style="background: #ccc; color: #333; margin-top: 5px; display: none;">❌ Futa Picha</button>
+
+
+    <div id="addFormButtons">
+      <button type="submit" id="saveBtn">💾 Hifadhi</button>
+      <button type="button" id="cancelBtn">❌ Ghairi</button>
+      <button type="button" id="exportData" class="data-action-btn">📥 Pakua Data (JSON)</button>
+      <button type="button" id="importDataBtn" class="data-action-btn">⬆️ Pakia Data (JSON)</button>
+    </div>
+  </form>
+</div>
+
+<div id="importModalOverlay">
+  <div id="importModal">
+    <h3>⬆️ Pakia Data (JSON)</h3>
+    <p>Chagua faili ya JSON iliyo na data ya wanafunzi.</p>
+    <input type="file" id="importFile" accept=".json">
+    <button id="confirmImport">✅ Pakia</button>
+    <button id="cancelImport">❌ Ghairi</button>
+  </div>
+</div>
+
+<div id="previewModal">
+  <div>
+    <h1>🏫 HALMASHAURI YA MANISPAA YA TEMEKE</h1>
+    <h2>📚 SHULE YA MSINGI MABATINI</h2>
+    <h3>🎓 DARASA LA TANO</h3>
+    <h4>📊 RIPOTI KUU YA MICHANGO YA USAFI</h4>
+    <h5 id="reportDate"></h5>
+    <div id="reportTableContainer"></div>
+    <button id="downloadPdf">📄 Pakua PDF</button>
+    <button id="closeReport">❌ Funga</button>
+  </div>
+</div>
+
+
+<div id="toastNotification" class="toast"></div>
+
+<footer>
+  <p>© 2025 Powered By Wella's Life - Hakimiliki Zote Zililindwa ✨</p>
+</footer>
+
+<script>
+const { jsPDF } = window.jspdf;
+
+// Elements
+const studentTableBody = document.querySelector("#studentTable tbody");
+const studentTable = document.getElementById("studentTable");
+const searchInput = document.getElementById("search");
+const addBtn = document.getElementById("addBtn");
+const printReportBtn = document.getElementById("printReport");
+const resetPaidBtn = document.getElementById("resetPaid");
+const previewModal = document.getElementById("previewModal");
+const reportTableContainer = document.getElementById("reportTableContainer");
+const reportDate = document.getElementById("reportDate");
+const downloadPdfBtn = document.getElementById("downloadPdf");
+const closeReportBtn = document.getElementById("closeReport");
+const addFormOverlay = document.getElementById("addFormOverlay");
+const addForm = document.getElementById("addForm");
+const numInput = document.getElementById("numInput");
+const nameInput = document.getElementById("nameInput");
+const genderInput = document.getElementById("genderInput");
+const amountInput = document.getElementById("amountInput");
+const imageInput = document.getElementById("imageInput"); // New element
+const imagePreview = document.getElementById("imagePreview"); // New element
+const currentImage = document.getElementById("currentImage"); // New element
+const imagePlaceholder = document.getElementById("imagePlaceholder"); // New element
+const clearImageBtn = document.getElementById("clearImageBtn"); // New element
+const cancelBtn = document.getElementById("cancelBtn");
+const noResultsMessage = document.getElementById("noResultsMessage");
+const toastNotification = document.getElementById("toastNotification");
+
+const filterAllBtn = document.getElementById("filterAll");
+const filterPaidBtn = document.getElementById("filterPaid");
+const filterUnpaidBtn = document.getElementById("filterUnpaid");
+const tableHeaders = document.querySelectorAll("#studentTable th[data-sort]");
+
+// Moved inside addForm:
+const exportDataBtn = document.getElementById("exportData");
+const importDataBtn = document.getElementById("importDataBtn");
+
+const importModalOverlay = document.getElementById("importModalOverlay");
+const importFile = document.getElementById("importFile");
+const confirmImportBtn = document.getElementById("confirmImport");
+const cancelImportBtn = document.getElementById("cancelImport");
+
+
+// Global state variables
+let students = [];
+let currentFilter = 'all'; // 'all', 'paid', 'unpaid'
+let sortColumn = 'number';
+let sortDirection = 'asc'; // 'asc' or 'desc'
+let currentStudentImage = null; // To hold base64 image data for the form
+
+// Sample students data (used ONLY if no data is found in localStorage)
+const defaultStudents = [
+  { number: 1, name: "ABAS HUSSEN NYEMBO", gender: "Mwanaume", amount: 200, paid: false, image: null },
+  { number: 2, name: "ABDULHAMID ATHUMAN ABDALLAH", gender: "Mwanaume", amount: 200, paid: false, image: null },
+  { number: 3, name: "ABDULKARIM HASSAN ABDALLAH", gender: "Mwanaume", amount: 200, paid: false, image: null },
+  { number: 4, name: "ABDULRAHMAN IBRAHIM MAKBER", gender: "Mwanaume", amount: 200, paid: false, image: null },
+  { number: 5, name: "ABDULWAHID MOHAMED MTUMBIA", gender: "Mwanaume", amount: 200, paid: false, image: null },
+  { number: 6, name: "ABDURAHIM TAKIYU ABUBAKARI", gender: "Mwanaume", amount: 200, paid: false, image: null },
+  { number: 7, name: "ABDURAHIMU MUSTAPHA MRISHO", gender: "Mwanaume", amount: 200, paid: false, image: null },
+  { number: 8, name: "ABIRAHI SUDI ANGOBOLA", gender: "Mwanaume", amount: 200, paid: false, image: null },
+  { number: 9, name: "ABRAHMAN AZIZI BENJAMINI", gender: "Mwanaume", amount: 200, paid: false, image: null },
+  { number: 10, name: "ABUBAKARI OMARY KITENGE", gender: "Mwanaume", amount: 200, paid: false, image: null },
+  { number: 11, name: "ABUDULI MBALAKA ZAGALO", gender: "Mwanaume", amount: 200, paid: false, image: null },
+  { number: 12, name: "AHMED ABDALLAH SHARIFU", gender: "Mwanaume", amount: 200, paid: false, image: null },
+  { number: 13, name: "AISHA MATAYO OBADIA", gender: "Mwanamke", amount: 200, paid: false, image: null },
+  { number: 14, name: "AISHA MOHAMED NASSORO", gender: "Mwanamke", amount: 200, paid: false, image: null },
+  { number: 15, name: "AJMAL ISSA JUMA", gender: "Mwanaume", amount: 200, paid: false, image: null }
+];
+
+// --- Utility Functions ---
+
+// Show toast notification
+function showToast(message, type = 'success') {
+  toastNotification.textContent = message;
+  toastNotification.className = `toast show ${type}`; // Add type class
+  setTimeout(() => {
+    toastNotification.className = toastNotification.className.replace("show", "");
+  }, 3000); // Hide after 3 seconds
+}
+
+// Animation helper
+function addLoadingEffect(element) {
+  element.classList.add('loading');
+  // Remove loading effect after a short delay to allow for visual feedback
+  setTimeout(() => element.classList.remove('loading'), 500);
+}
+
+// Save to localStorage
+function saveData() {
+  try {
+    const data = JSON.stringify(students);
+    localStorage.setItem('studentsData', data);
+    console.log("Data saved to localStorage successfully.");
+  } catch (error) {
+    console.error('Error saving data to localStorage:', error);
+    showToast("Kosa kuhifadhi data!", "error");
+  }
+}
+
+// Load from localStorage
+function loadData() {
+  try {
+    const data = localStorage.getItem('studentsData');
+    if (data) {
+      students = JSON.parse(data);
+      console.log("Data loaded from localStorage successfully.");
+      // Ensure 'number' is treated as a number and 'image' exists
+      students.forEach(s => {
+        s.number = parseInt(s.number);
+        if (s.image === undefined) { // Add image property if it doesn't exist in old data
+            s.image = null;
+        }
+      });
+    } else {
+      console.log("No data found in localStorage. Using default data.");
+      students = [...defaultStudents]; // Use a copy of default data
+      saveData(); // Save default data immediately so it's persisted
+    }
+  } catch (error) {
+    console.error('Error loading data from localStorage:', error);
+    showToast("Kosa kupakia data! Kutumia data chaguomsingi.", "error");
+    students = [...defaultStudents]; // Fallback to default on error
+    saveData(); // Save default data immediately after fallback
+  }
+}
+
+// Function to get the next available student number
+function getNextStudentNumber() {
+    if (students.length === 0) {
+        return 1;
+    }
+    const maxNumber = Math.max(...students.map(s => s.number));
+    return maxNumber + 1;
+}
+
+// Function to handle image preview
+function updateImagePreview(imageData) {
+    if (imageData) {
+        currentImage.src = imageData;
+        currentImage.style.display = 'block';
+        imagePlaceholder.style.display = 'none';
+        clearImageBtn.style.display = 'block';
+    } else {
+        currentImage.src = '';
+        currentImage.style.display = 'none';
+        imagePlaceholder.style.display = 'block';
+        clearImageBtn.style.display = 'none';
+    }
+}
+
+// --- Render & Update Functions ---
+
+// Apply current filter and sort, then render
+function applyFilterAndSort() {
+  let displayStudents = [...students]; // Start with a copy of all students
+  const searchTerm = searchInput.value.trim().toLowerCase();
+
+  if (searchTerm === "") {
+    // If search input is empty, hide the table and show the "no results" message
+    studentTable.style.display = "none";
+    noResultsMessage.style.display = "block";
+    noResultsMessage.textContent = "Tafadhali andika jina au namba kutafuta wanafunzi.";
+    return; // Exit function, no need to render table
+  }
+
+  // Apply search
+  if (!isNaN(parseInt(searchTerm))) { // If search term is a number
+    displayStudents = displayStudents.filter(s => s.number.toString() === searchTerm);
+  } else { // Otherwise, search by name
+    displayStudents = displayStudents.filter(s => s.name.toLowerCase().includes(searchTerm));
+  }
+
+  // Apply filter *after* search (or to the full list if search is empty)
+  if (currentFilter === 'paid') {
+    displayStudents = displayStudents.filter(s => s.paid);
+  } else if (currentFilter === 'unpaid') {
+    displayStudents = displayStudents.filter(s => !s.paid);
+  }
+
+  // Apply sorting
+  displayStudents.sort((a, b) => {
+    let res = 0;
+    if (sortColumn === 'number') {
+      res = a.number - b.number;
+    } else if (sortColumn === 'name') {
+      res = a.name.localeCompare(b.name);
+    }
+    return sortDirection === 'asc' ? res : -res;
+  });
+
+  renderTable(displayStudents);
+}
+
+// Render table
+function renderTable(data) {
+  studentTableBody.innerHTML = "";
+
+  if (data.length === 0) {
+    studentTable.style.display = "none";
+    noResultsMessage.style.display = "block";
+    noResultsMessage.textContent = "Hakuna matokeo yaliyopatikana.";
+    return;
+  }
+
+  studentTable.style.display = "table";
+  noResultsMessage.style.display = "none";
+
+
+  data.forEach(student => {
+    const tr = document.createElement("tr");
+    tr.innerHTML = `
+      <td>
+        <div class="student-image-cell">
+          ${student.image ? `<img src="${student.image}" alt="Picha ya ${student.name}" class="student-image">` : `<span class="student-image-placeholder">👤</span>`}
+        </div>
+      </td>
+      <td><strong>${student.number}</strong></td>
+      <td style="text-align: left;">${student.name}</td>
+      <td>${student.gender === 'Mwanaume' ? '👦' : '👧'}</td>
+      <td><strong>${student.amount}</strong></td>
+      <td class="${student.paid ? "status-paid" : "status-pending"}">
+        ${student.paid ? "✅ Imelipwa" : "❌ Hajalipa"}
+      </td>
+      <td>
+        <button class="${student.paid ? "paidBtn" : "markPaidBtn"}" ${student.paid ? 'disabled' : ''}>
+          ${student.paid ? "✅ Imelipwa" : "💰 Lipa"}
+        </button>
+        <button class="editBtn">✏️ Badili</button>
+        <button class="deleteBtn">🗑️ Futa</button>
+      </td>
+    `;
+
+    // Add event listeners for action buttons
+    const markPaidButton = tr.querySelector(`.${student.paid ? "paidBtn" : "markPaidBtn"}`);
+    if (markPaidButton && !student.paid) { // Only add listener if button is active (not paid yet)
+        markPaidButton.addEventListener("click", (e) => {
+            addLoadingEffect(e.target);
+            student.paid = true;
+            saveData();
+            showToast(`✅ ${student.name} amelipa!`);
+            applyFilterAndSort(); // Re-render with current filter/sort
+        });
+    }
+
+    tr.querySelector(".editBtn").addEventListener("click", (e) => {
+      addLoadingEffect(e.target);
+      setTimeout(() => openEditForm(student.number), 300);
+    });
+
+    tr.querySelector(".deleteBtn").addEventListener("click", (e) => {
+      if (confirm(`🗑️ Unataka kufuta mwanafunzi ${student.name}?`)) {
+        addLoadingEffect(e.target);
+        students = students.filter(s => s.number !== student.number);
+        saveData();
+        showToast(`🗑️ ${student.name} amefutwa!`);
+        applyFilterAndSort(); // Re-render with current filter/sort
+      }
+    });
+
+    studentTableBody.appendChild(tr);
+  });
+}
+
+
+// --- Event Handlers ---
+
+// Open edit/add form
+function openEditForm(number = null) {
+  currentStudentImage = null; // Reset image for the form
+  imageInput.value = ''; // Clear file input
+  updateImagePreview(null); // Clear preview
+
+  if (number) {
+    const student = students.find(s => s.number === number);
+    if (student) {
+      numInput.value = student.number;
+      nameInput.value = student.name;
+      genderInput.value = student.gender;
+      amountInput.value = student.amount;
+      currentStudentImage = student.image; // Load existing image
+      updateImagePreview(currentStudentImage); // Show existing image
+      numInput.readOnly = true; // Number cannot be changed when editing
+      numInput.style.backgroundColor = '#f0f0f0';
+      // Store original number for uniqueness check in submit handler
+      addForm.dataset.originalNumber = student.number;
+      addForm.dataset.mode = 'edit';
+      addForm.querySelector('h3').textContent = '✏️ Badili Taarifa za Mwanafunzi';
+    }
+  } else {
+    numInput.value = getNextStudentNumber();
+    nameInput.value = "";
+    genderInput.value = "";
+    amountInput.value = "200"; // Default amount for new students
+    numInput.readOnly = true; // Number is auto-assigned for new students
+    numInput.style.backgroundColor = '#f0f0f0';
+    addForm.dataset.originalNumber = ''; // Clear original number
+    addForm.dataset.mode = 'add';
+    addForm.querySelector('h3').textContent = '➕ Ongeza Mwanafunzi Mpya';
+  }
+  addFormOverlay.style.display = "flex";
+  nameInput.focus();
+}
+
+// Add new student button click
+addBtn.addEventListener("click", () => {
+  openEditForm();
+});
+
+// Cancel form
+cancelBtn.addEventListener("click", () => {
+  addFormOverlay.style.display = "none";
+});
+
+// Close modal on overlay click
+addFormOverlay.addEventListener("click", (e) => {
+  if (e.target === addFormOverlay) {
+    addFormOverlay.style.display = "none";
+  }
+});
+
+// Handle image file selection
+imageInput.addEventListener('change', (event) => {
+    const file = event.target.files[0];
+    if (file) {
+        const reader = new FileReader();
+        reader.onload = (e) => {
+            currentStudentImage = e.target.result; // Store base64 string
+            updateImagePreview(currentStudentImage);
+        };
+        reader.readAsDataURL(file); // Convert file to Base64
+    } else {
+        currentStudentImage = null;
+        updateImagePreview(null);
+    }
+});
+
+// Clear image button
+clearImageBtn.addEventListener('click', () => {
+    currentStudentImage = null;
+    imageInput.value = ''; // Clear the file input
+    updateImagePreview(null);
+});
+
+
+// Submit form (Add/Edit)
+addForm.addEventListener("submit", e => {
+  e.preventDefault();
+  const number = parseInt(numInput.value);
+  const name = nameInput.value.trim();
+  const gender = genderInput.value.trim();
+  const amount = parseInt(amountInput.value);
+
+  if (!number || !name || !gender || isNaN(amount) || amount <= 0) {
+    showToast("⚠️ Tafadhali jaza taarifa zote na uhakikishe kiasi ni namba halali.", "error");
+    return;
+  }
+
+  const mode = addForm.dataset.mode;
+  const originalNumber = parseInt(addForm.dataset.originalNumber);
+
+  if (mode === 'add') {
+    // Check if number already exists
+    if (students.some(s => s.number === number)) {
+      showToast("⚠️ Namba ya mwanafunzi ipo tayari! Jaribu namba nyingine.", "error");
+      numInput.focus();
+      return;
+    }
+    students.push({ number, name, gender, amount, paid: false, image: currentStudentImage });
+    showToast("✅ Mwanafunzi ameongezwa.");
+  } else if (mode === 'edit') {
+    const idx = students.findIndex(s => s.number === originalNumber);
+    if (idx !== -1) {
+      students[idx].name = name;
+      students[idx].gender = gender;
+      students[idx].amount = amount;
+      students[idx].image = currentStudentImage; // Update image
+      showToast("✅ Mwanafunzi amesasishwa.");
+    } else {
+      showToast("🚫 Kosa: Mwanafunzi wa kubadili hakupatikana.", "error");
+    }
+  }
+
+  saveData();
+  addFormOverlay.style.display = "none";
+  searchInput.value = ""; // Clear search input after add/edit
+  applyFilterAndSort(); // This will now hide the table until a new search is entered
+});
+
+
+// Reset paid status
+resetPaidBtn.addEventListener("click", () => {
+  if (confirm("🔄 Una uhakika unataka kuweka tuli malipo yote?")) {
+    addLoadingEffect(resetPaidBtn);
+    students.forEach(s => s.paid = false);
+    saveData();
+    showToast("✅ Malipo yote yamewekwa tuli!");
+    applyFilterAndSort(); // Re-render the table to reflect the new "unpaid" status
+  }
+});
+
+// Search input event listener
+searchInput.addEventListener("input", applyFilterAndSort);
+
+// Filter buttons event listeners
+const filterButtons = document.querySelectorAll('.filter-buttons button'); // Moved up for scope
+
+filterAllBtn.addEventListener("click", () => {
+  currentFilter = 'all';
+  filterButtons.forEach(btn => btn.classList.remove('active'));
+  filterAllBtn.classList.add('active');
+  applyFilterAndSort();
+});
+
+filterPaidBtn.addEventListener("click", () => {
+  currentFilter = 'paid';
+  filterButtons.forEach(btn => btn.classList.remove('active'));
+  filterPaidBtn.classList.add('active');
+  applyFilterAndSort();
+});
+
+filterUnpaidBtn.addEventListener("click", () => {
+  currentFilter = 'unpaid';
+  filterButtons.forEach(btn => btn.classList.remove('active'));
+  filterUnpaidBtn.classList.add('active');
+  applyFilterAndSort();
+});
+
+
+// Table header sorting
+tableHeaders.forEach(header => {
+  header.addEventListener('click', () => {
+    const column = header.dataset.sort;
+    if (sortColumn === column) {
+      sortDirection = sortDirection === 'asc' ? 'desc' : 'asc';
+    } else {
+      sortColumn = column;
+      sortDirection = 'asc';
+    }
+
+    // Update arrows
+    tableHeaders.forEach(h => {
+        h.textContent = h.textContent.replace(' ▲', '').replace(' ▼', '');
+    });
+    if (sortDirection === 'asc') {
+        header.textContent += ' ▲';
+    } else {
+        header.textContent += ' ▼';
+    }
+
+    applyFilterAndSort();
+  });
+});
+
+// --- Data Export/Import (MOVED INSIDE ADD FORM LOGIC) ---
+
+// Export Data (now triggered from within addForm)
+exportDataBtn.addEventListener("click", () => {
+  addLoadingEffect(exportDataBtn);
+  try {
+    const dataStr = JSON.stringify(students, null, 2); // Pretty print JSON
+    const blob = new Blob([dataStr], { type: "application/json" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `Wanafunzi_Mabatini_Backup_${new Date().toISOString().slice(0,10)}.json`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+    showToast("✅ Data imepakuliwa kama JSON.");
+  } catch (error) {
+    console.error("Error exporting data:", error);
+    showToast("🚫 Kosa kupakua data!", "error");
+  }
+});
+
+// Open Import Modal (now triggered from within addForm)
+importDataBtn.addEventListener("click", () => {
+  importFile.value = ''; // Clear previous file selection
+  importModalOverlay.style.display = "flex";
+  addFormOverlay.style.display = "none"; // Hide add form when import modal opens
+});
+
+// Close Import Modal
+cancelImportBtn.addEventListener("click", () => {
+  importModalOverlay.style.display = "none";
+  addFormOverlay.style.display = "flex"; // Show add form again
+});
+
+importModalOverlay.addEventListener("click", (e) => {
+  if (e.target === importModalOverlay) {
+    importModalOverlay.style.display = "none";
+    addFormOverlay.style.display = "flex"; // Show add form again
+  }
+  });
+
+
+// Confirm Import
+confirmImportBtn.addEventListener("click", () => {
+  addLoadingEffect(confirmImportBtn);
+  const file = importFile.files[0];
+  if (!file) {
+    showToast("⚠️ Tafadhali chagua faili ya JSON kwanza.", "error");
+    confirmImportBtn.classList.remove('loading');
+    return;
+  }
+
+  const reader = new FileReader();
+  reader.onload = (e) => {
+    try {
+      const importedData = JSON.parse(e.target.result);
+      // Basic validation for imported data structure
+      const isValidData = Array.isArray(importedData) && importedData.every(s =>
+        s.number && s.name && typeof s.amount === 'number' && typeof s.paid === 'boolean'
+      );
+
+      if (isValidData) {
+        if (confirm("⚠️ Uko karibu kupakia data. Hii itafuta data zote zilizopo na kuzibadilisha na data mpya. Unaendelea?")) {
+          students = importedData.map(s => {
+            const student = { ...s, number: parseInt(s.number) };
+            if (student.image === undefined) { // Ensure image property exists
+                student.image = null;
+            }
+            return student;
+          });
+          saveData();
+          showToast("✅ Data imepakiwa na kuhifadhiwa.");
+          // After import, ensure search input is cleared and table is hidden until new search
+          searchInput.value = "";
+          applyFilterAndSort(); // This will now hide the table until a new search is entered
+          importModalOverlay.style.display = "none";
+          addFormOverlay.style.display = "none"; // Ensure add form is closed after successful import
+        }
+      } else {
+        showToast("🚫 Faili sio sahihi. Tafadhali hakikisha ni faili ya JSON yenye muundo sahihi wa wanafunzi (number, name, amount, paid, image).", "error");
+      }
+    } catch (error) {
+      console.error("Error importing data:", error);
+      showToast("🚫 Kosa kusoma au kuchambua faili. Hakikisha ni JSON halali.", "error");
+    } finally {
+      confirmImportBtn.classList.remove('loading');
+    }
+  };
+  reader.onerror = () => {
+    showToast("🚫 Kosa kusoma faili.", "error");
+    confirmImportBtn.classList.remove('loading');
+  };
+  reader.readAsText(file);
+});
+
+
+// --- Report Generation (Main Report) ---
+
+// Close main report modal
+closeReportBtn.addEventListener("click", () => {
+  previewModal.style.display = "none";
+});
+
+previewModal.addEventListener("click", (e) => {
+  if (e.target === previewModal) {
+    previewModal.style.display = "none";
+  }
+});
+
+// Generate main report
+printReportBtn.addEventListener("click", () => {
+  addLoadingEffect(printReportBtn); // Add loading effect
+  const now = new Date();
+  const dateStr = now.toLocaleDateString('sw-TZ', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }); // Added weekday
+  const timeStr = now.toLocaleTimeString('sw-TZ', { hour: '2-digit', minute: '2-digit' });
+
+  reportDate.textContent = `📅 Tarehe: ${dateStr} ⏰ Muda: ${timeStr}`;
+
+  // Report should always use all students, regardless of current filter/search
+  // Ensure students are sorted by number for the report
+  const studentsForReport = [...students].sort((a,b) => a.number - b.number);
+
+  const paidStudents = studentsForReport.filter(s => s.paid);
+  const unpaidStudents = studentsForReport.filter(s => !s.paid);
+
+  let html = `
+    <h4>✅ WALIOLIPA</h4>
+    ${paidStudents.length > 0 ? `
+    <table style="width:100%; border-collapse:collapse; margin-bottom:20px;">
+      <thead>
+        <tr style="background: linear-gradient(135deg, #11998e, #38ef7d); color: white;">
+          <th style="padding: 10px; border: 1px solid #ddd;">Namba</th>
+          <th style="padding: 10px; border: 1px solid #ddd;">Jina</th>
+          <th style="padding: 10px; border: 1px solid #ddd;">Kiasi</th>
+        </tr>
+      </thead>
+      <tbody>
+        ${paidStudents.map(s => `
+          <tr>
+            <td style="padding: 8px; border: 1px solid #ddd;">${s.number}</td>
+            <td style="padding: 8px; border: 1px solid #ddd; text-align:left;">${s.name}</td>
+            <td style="padding: 8px; border: 1px solid #ddd;">${s.amount.toLocaleString()}</td>
+          </tr>
+        `).join('')}
+      </tbody>
+    </table>
+    ` : '<p style="text-align: center; margin-top: 10px;">Hakuna wanafunzi waliolipa bado.</p>'}
+
+    <h4>⛔ WASIOLIPA</h4>
+    ${unpaidStudents.length > 0 ? `
+    <table style="width:100%; border-collapse:collapse; margin-bottom:20px;">
+      <thead>
+        <tr style="background: linear-gradient(135deg, #ff6b6b, #ee5a52); color: white;">
+          <th style="padding: 10px; border: 1px solid #ddd;">Namba</th>
+          <th style="padding: 10px; border: 1px solid #ddd;">Jina</th>
+          <th style="padding: 10px; border: 1px solid #ddd;">Kiasi</th>
+        </tr>
+      </thead>
+      <tbody>
+        ${unpaidStudents.map(s => `
+          <tr>
+            <td style="padding: 8px; border: 1px solid #ddd;">${s.number}</td>
+            <td style="padding: 8px; border: 1px solid #ddd; text-align:left;">${s.name}</td>
+            <td style="padding: 8px; border: 1px solid #ddd;">${s.amount.toLocaleString()}</td>
+          </tr>
+        `).join('')}
+      </tbody>
+    </table>
+    ` : '<p style="text-align: center; margin-top: 10px;">Wanafunzi wote wamelipa michango yao.</p>'}
+  `;
+
+  reportTableContainer.innerHTML = html;
+  previewModal.style.display = "flex";
+  printReportBtn.classList.remove('loading'); // Remove loading effect after modal is shown
+});
+
+// Download PDF (Main Report)
+downloadPdfBtn.addEventListener("click", () => {
+  addLoadingEffect(downloadPdfBtn);
+  const doc = new jsPDF();
+
+  const schoolName = "HALMASHAURI YA MANISPAA YA TEMEKE";
+  const primarySchool = "SHULE YA MSINGI MABATINI";
+  const feesType = "MAKUSANYO YA MICHANGO YA USAFI";
+  const className = "DARASA LA TANO 2025";
+  const reportTitle = "RIPOTI KUU YA MICHANGO YA USAFI";
+
+  const now = new Date();
+  const dateStr = now.toLocaleDateString('sw-TZ', { year: 'numeric', month: 'long', day: 'numeric' });
+  const timeStr = now.toLocaleTimeString('sw-TZ', { hour: '2-digit', minute: '2-digit' });
+
+  // Header
+  doc.setFontSize(14);
+  doc.text(schoolName, doc.internal.pageSize.getWidth() / 2, 15, { align: 'center' });
+  doc.setFontSize(12);
+  doc.text(primarySchool, doc.internal.pageSize.getWidth() / 2, 22, { align: 'center' });
+  doc.text(feesType, doc.internal.pageSize.getWidth() / 2, 29, { align: 'center' });
+  doc.text(className, doc.internal.pageSize.getWidth() / 2, 36, { align: 'center' });
+  doc.setFontSize(16);
+  doc.text(reportTitle, doc.internal.pageSize.getWidth() / 2, 48, { align: 'center' });
+  doc.setFontSize(10);
+  doc.text(`Tarehe: ${dateStr} | Muda: ${timeStr}`, doc.internal.pageSize.getWidth() / 2, 55, { align: 'center' });
+
+  let yOffset = 65;
+
+  // Report should always use all students, regardless of current filter/search
+  const studentsForReport = [...students].sort((a,b) => a.number - b.number);
+  const paidStudents = studentsForReport.filter(s => s.paid);
+  const unpaidStudents = studentsForReport.filter(s => !s.paid);
+
+  // --- Summary Section ---
+  const totalStudents = studentsForReport.length;
+  const paidCount = paidStudents.length;
+  const unpaidCount = unpaidStudents.length;
+  const totalPaidAmount = paidStudents.reduce((sum, s) => sum + s.amount, 0);
+
+  doc.setFontSize(12);
+  doc.text("MUHTASARI WA RIPOTI", 14, yOffset);
+  yOffset += 5;
+
+  doc.autoTable({
+    body: [
+      ['Jumla ya Wanafunzi:', totalStudents],
+      ['Idadi ya Waliolipa:', paidCount],
+      ['Idadi ya Wasiolipa:', unpaidCount],
+      ['Jumla ya Kiasi Kilicholipwa:', `Tsh ${totalPaidAmount.toLocaleString()}`]
+    ],
+    startY: yOffset + 5,
+    theme: 'grid',
+    styles: { fontSize: 10, cellPadding: 3, halign: 'left' },
+    columnStyles: {
+        1: { fontStyle: 'bold', halign: 'right' } // Make values bold and right-aligned
+    },
+    didDrawPage: function (data) {
+        yOffset = data.cursor.y; // Update yOffset after table
+    }
+  });
+
+  yOffset = doc.autoTable.previous.finalY + 15; // Ensure good spacing after the summary table
+
+  // Paid Students Table
+  doc.setFontSize(12);
+  doc.text("WALIOLIPA", 14, yOffset);
+  yOffset += 5;
+
+  const paidHeaders = [['Namba', 'Jina', 'Jinsia', 'Kiasi (Tsh)']];
+  const paidData = paidStudents.map(s => [s.number, s.name, s.gender, s.amount.toLocaleString()]);
+
+  if (paidData.length > 0) {
+    doc.autoTable({
+      head: paidHeaders,
+      body: paidData,
+      startY: yOffset + 5,
+      theme: 'grid',
+      headStyles: { fillColor: [17, 153, 142], textColor: 255, fontStyle: 'bold' },
+      styles: { fontSize: 10, cellPadding: 3, halign: 'center' },
+      columnStyles: {
+          1: { halign: 'left' } // Align 'Jina' column to the left
+      },
+      didDrawPage: function (data) {
+          yOffset = data.cursor.y; // Update yOffset after table
+      }
+    });
+    yOffset = doc.autoTable.previous.finalY; // Update yOffset to be after this table
+  } else {
+      doc.text("Hakuna wanafunzi waliolipa bado.", 14, yOffset + 10);
+      yOffset += 15;
+  }
+
+  yOffset += 15; // Add some space between tables
+
+  // Unpaid Students Table
+  doc.setFontSize(12);
+  doc.text("WASIOLIPA", 14, yOffset);
+  yOffset += 5;
+
+  const unpaidHeaders = [['Namba', 'Jina', 'Jinsia', 'Kiasi (Tsh)']];
+  const unpaidData = unpaidStudents.map(s => [s.number, s.name, s.gender, s.amount.toLocaleString()]);
+
+  if (unpaidData.length > 0) {
+    doc.autoTable({
+      head: unpaidHeaders,
+      body: unpaidData,
+      startY: yOffset + 5,
+      theme: 'grid',
+      headStyles: { fillColor: [255, 107, 107], textColor: 255, fontStyle: 'bold' },
+      styles: { fontSize: 10, cellPadding: 3, halign: 'center' },
+      columnStyles: {
+          1: { halign: 'left' } // Align 'Jina' column to the left
+      }
+    });
+  } else {
+      doc.text("Wanafunzi wote wamelipa michango yao.", 14, yOffset + 10);
+  }
+
+  doc.save(`Ripoti_Mbatini_Darasa_Tano_${new Date().toISOString().slice(0,10)}.pdf`);
+  setTimeout(() => downloadPdfBtn.classList.remove('loading'), 500);
+});
+
+
+// --- Service Worker Registration ---
+// (This needs to be in a separate service-worker.js file for production)
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('/service-worker.js')
+      .then(registration => {
+        console.log('ServiceWorker registered:', registration);
+      })
+      .catch(registrationError => {
+        console.log('ServiceWorker registration failed:', registrationError);
+      });
+  });
+}
+
+
+// --- Initial Load ---
+document.addEventListener("DOMContentLoaded", () => {
+  loadData();
+  // Set initial sorting indicator on "Namba"
+  document.querySelector('th[data-sort="number"]').textContent = 'Namba ▼';
+
+  // Initially hide the table and show the instructional message
+  studentTable.style.display = "none";
+  noResultsMessage.style.display = "block";
+  noResultsMessage.textContent = "Tafadhali andika jina au namba kutafuta wanafunzi.";
+});
+</script>
+
+<script id="manifest-json-content" type="application/json">
+{
+  "name": "Mfumo wa Malipo Shule ya Msingi Mabatini",
+  "short_name": "Malipo Mabatini",
+  "description": "Mfumo rahisi wa kudhibiti malipo ya wanafunzi shule ya msingi Mabatini",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#0066ff",
+  "icons": [
+    {
+      "src": "icons/icon-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "icons/icon-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
+</script>
+
+<script id="service-worker-js-content" type="text/javascript">
+/*
+// service-worker.js content (for your actual file)
+const CACHE_NAME = 'mabatini-payments-v9'; // Cache name changed for versioning
+const urlsToCache = [
+  './',
+  './index.html',
+  'https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js',
+  'https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.25/jspdf.plugin.autotable.min.js',
+  // Add paths to your icons if you create them in an 'icons' folder
+  // './icons/icon-192x192.png',
+  // './icons/icon-512x512.png'
+];
+
+self.addEventListener('install', (event) => {
+  event.waitUntil(
+    caches.open(CACHE_NAME)
+      .then((cache) => {
+        console.log('Opened cache');
+        return cache.addAll(urlsToCache);
+      })
+  );
+});
+
+self.addEventListener('fetch', (event) => {
+  event.respondWith(
+    caches.match(event.request)
+      .then((response) => {
+        // Cache hit - return response
+        if (response) {
+          return response;
+        }
+        // No cache hit - fetch from network
+        return fetch(event.request);
+      })
+  );
+});
+
+self.addEventListener('activate', (event) => {
+  const cacheWhitelist = [CACHE_NAME];
+  event.waitUntil(
+    caches.keys().then((cacheNames) => {
+      return Promise.all(
+        cacheNames.map((cacheName) => {
+          if (cacheWhitelist.indexOf(cacheName) === -1) {
+            return caches.delete(cacheName); // Delete old caches
+          }
+        })
+      );
+    })
+  );
+});
+*/
+</script>
+
+</body>
+</html>
