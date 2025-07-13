@@ -1,8 +1,21 @@
-
+{
   "name": "Mfumo wa Malipo Shule ya Msingi Mabatini",
   "short_name": "Malipo Mabatini",
   "description": "Mfumo rahisi wa kudhibiti malipo ya wanafunzi shule ya msingi Mabatini",
   "start_url": "./",
   "display": "standalone",
   "background_color": "#ffffff",
-  "theme_color": "#0066ff"
+  "theme_color": "#0066ff",
+  "icons": [
+    {
+      "src": "icons/icon-152x152.png",
+      "sizes": "152x152",
+      "type": "image/png"
+    },
+    {
+      "src": "icons/icon-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
