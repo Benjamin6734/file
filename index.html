@@ -1435,17 +1435,7 @@ downloadPdfBtn.addEventListener("click", () => {
 
 // --- Service Worker Registration ---
 // (This needs to be in a separate service-worker.js file for production)
-if ('serviceWorker' in navigator) {
-  window.addEventListener('load', () => {
-    navigator.serviceWorker.register('/service-worker.js')
-      .then(registration => {
-        console.log('ServiceWorker registered:', registration);
-      })
-      .catch(registrationError => {
-        console.log('ServiceWorker registration failed:', registrationError);
-      });
-  });
-}
+
 
 
 // --- Initial Load ---
