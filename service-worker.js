@@ -1,9 +1,10 @@
-const CACHE_NAME = 'tendency-cache-v1';
+const CACHE_NAME = 'file-cache-v2';
 const urlsToCache = [
-  '/tendency/',
-  '/tendency/index.html',
-  '/tendency/app.js',
-  '/tendency/manifest.json'
+  './',
+  'index.html',
+  'app.js',
+  'manifest.json',
+  'icon.png'
 ];
 
 self.addEventListener('install', event => {
@@ -29,6 +30,6 @@ self.addEventListener('fetch', event => {
   event.respondWith(
     caches.match(event.request)
       .then(response => response || fetch(event.request))
-      .catch(() => caches.match('/tendency/index.html'))
+      .catch(() => caches.match('index.html'))
   );
 });
